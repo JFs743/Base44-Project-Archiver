@@ -5,7 +5,9 @@
 1. Start opening each file sequentially, order doesn't matter, it's okay if you skip one and come back to it
 1. keep an eye on the javascript console, there should be a message for each captured file, sometimes it takes a second or two to capture
 1. when you're done, copy-paste the End script into the console
-1. Save the "dump.json" file, it contains your whole project, go to the "step2" folder of this repo
+1. Save the "dump.json" file, it contains your whole project
+1. Open step2.html, drag your dump.json file onto the upload button (or click it and select your dump file)
+1. either download as a zip or write to disk, it will ask for a folder to write to, it's slower than the zip, leave it be for a minute
 
 Main script:
 ```js
