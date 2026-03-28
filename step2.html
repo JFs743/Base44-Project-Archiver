@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JSON → File Tree</title>
+</head>
+<script>
+  let data = {};
+
+  document.getElementById('fileInput').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    const text = await file.text();
+    data = JSON.parse(text);
+    console.log('Loaded', Object.keys(data).length, 'files');
+  });
+
+  async function buildZip() {
+    if(!Object.entries(data)) {
+      alert("no data loaded");
+    }
+
+    const zip = new JSZip();
+    for (const [path, content] of Object.entries(data)) {
+      zip.file(path, content);
+    }
+
+    const blob = await zip.generateAsync({ type: 'blob' });
+
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'files.zip';
+    a.click();
+  }
+
+  async function writeFiles() {    
+    if(!Object.entries(data)) {
+      alert("no data loaded");
+    }
+    const dirHandle = await window.showDirectoryPicker();
+
+    for (const [path, content] of Object.entries(data)) {
+      const parts = path.split('/');
+      let currentDir = dirHandle;
+
+      for (let i = 0; i < parts.length - 1; i++) {
+        currentDir = await currentDir.getDirectoryHandle(parts[i], { create: true });
+      }
+
+      const fileHandle = await currentDir.getFileHandle(parts.at(-1), { create: true });
+      const writable = await fileHandle.createWritable();
+      await writable.write(content);
+      await writable.close();
+    }
+  }
+</script>
+<body>
+  <h2>Import JSON dump</h2>
+  <input type="file" id="fileInput" />
+  <button onclick="buildZip()">Download ZIP</button>
+  <button onclick="writeFiles()">Write to disk (experimental, chromium only)</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
+</body>
+</html>
