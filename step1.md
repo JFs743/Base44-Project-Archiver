@@ -5,8 +5,15 @@ This process allows you to manually aggregate the files of your project into a s
 ## Instructions
 1. **Open your Project**: Navigate to your project on the platform and enter the Code View.
 1. **Open Developer Tools**: Press `F12` (or `Cmd+Option+I` on Mac) and select the Console tab.
-1. **Initialize the Session**: Copy and paste the Initialization Script below into the console. If prompted by your browser, type `allow pasting` to enable the command line.
+1. **Initialize the Session**: Copy and paste the Main Script below into the console. If prompted by your browser, type `allow pasting` to enable the command line.
 1. **Manually Index Files**: One by one, click on each file in your project sidebar.
+     1. if nothing appears in the console when you change file, the selector is probably incorrect, it seems inconsistant, to update it, follow these steps:
+        1. First, stop the current capture with the clearInterval line in the end Script
+        1. Right click on the path above the editor, inspect elements
+        1. You should see a `<div>` containing multiple `<span>` elements
+        1. Right click on the div, copy, JS Path
+        1. Copy the value in quotes to the quotes of the first line of the Main script
+        1. Return to step 3
 1. As you view each file, the script will temporarily hold the content in your browser's memory.
 1. Check the console for a `[Captured]` confirmation message for each file.
 1. **Finalize & Export**: Once you have manually cycled through all necessary files, copy and paste the End Script into the console.
